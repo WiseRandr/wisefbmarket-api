@@ -1,10 +1,14 @@
 const app = require('express')();
 const routes = require('./api_routes.js');
+const bodyParser = require('body-parser');
 
 app.set('port', process.env.PORT || 8000);
 
 // Allow Cross Origin for api endpoints
 app.use(require('cors')());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Api routing
 routes.api(app);

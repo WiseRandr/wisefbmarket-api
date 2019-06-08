@@ -8,7 +8,7 @@ const prepareUser = user => {
   return user;
 };
 
-const setUser = (user, cb) => {
+const setUser = (user, cb, errorCb) => {
   console.log('***** Setting up new user *****');
   getUser({ username: user.username }, catchUser => {
     if (catchUser === null) {
@@ -20,11 +20,11 @@ const setUser = (user, cb) => {
         cb(newuser);
       });
     } else {
-      console.log(
-        `Error::: error while inserting new user => User ${
-          user.name
-        } already exist`
-      );
+      const user_exist_mess = `Error::: error while inserting new user => User ${
+        user.name
+      } already exist`;
+      console.log(user_exist_mess);
+      errorCb({ message: user_exist_mess });
     }
   });
 };

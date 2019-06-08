@@ -7,13 +7,16 @@ function get_api(app) {
     res.json([{ data: 'data' }]);
   });
 
-  app.get('/api/adduser', (req, res) => {
+  app.post('/api/adduser', (req, res) => {
+    res.type('json');
+    res.status(200);
     api.User.setUser(
-      { name: 'Kathia', username: 'kathia', password: 'kathia', roleId: 5 },
+      req.body.user,
       function(user) {
-        res.type('json');
-        res.status(200);
         res.json(user);
+      },
+      function(error) {
+        res.json(error);
       }
     );
   });
@@ -24,6 +27,36 @@ function get_api(app) {
       res.type('json');
       res.status(200);
       res.json(users);
+    });
+  });
+
+  app.post('/api/setproduct', function(req, res) {
+    res.type('json');
+    res.status(200);
+    api.Product.setProduct(
+      req.body.product,
+      function(product) {
+        res.json(product);
+      },
+      function(error) {
+        res.json(error);
+      }
+    );
+  });
+
+  app.get('/api/product/:name_id', function(req, res) {
+    res.type('json');
+    res.status(200);
+    api.Product.getProducts({ nameId: req.params.name_id }, function(products) {
+      res.json(products[0]);
+    });
+  });
+
+  app.get('/api/products', function(req, res) {
+    res.type('json');
+    res.status(200);
+    api.Product.getProducts({}, function(products) {
+      res.json(products);
     });
   });
 }
